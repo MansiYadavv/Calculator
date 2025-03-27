@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css"; // Import the CSS file
+
 
 const Calculator = () => {
   const [expression, setExpression] = useState("");
@@ -36,21 +36,23 @@ const Calculator = () => {
   return (
     <div className="calculator-container">
       <div className="calculator">
-        <h1>Calculator</h1>
+        <h1>React Calculator</h1>
         <input type="text" className="display" value={expression} readOnly />
         <div className="display">{result}</div>
         <div className="button-grid">
-          {["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", "C", "=", "+"].map((btn) => (
-            <button
-              key={btn}
-              className={`button ${btn === "=" ? "operator" : ""} ${btn === "C" ? "clear" : ""}`}
-              onClick={() =>
-                btn === "C" ? handleClear() : btn === "=" ? handleCalculate() : handleClick(btn)
-              }
-            >
-              {btn}
-            </button>
-          ))}
+          {["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", "C", "=", "+"].map(
+            (btn) => (
+              <button
+                key={btn}
+                className={`${btn === "=" ? "operator" : ""} ${btn === "C" ? "clear" : ""}`}
+                onClick={() =>
+                  btn === "C" ? handleClear() : btn === "=" ? handleCalculate() : handleClick(btn)
+                }
+              >
+                {btn}
+              </button>
+            )
+          )}
         </div>
       </div>
     </div>
