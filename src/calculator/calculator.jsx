@@ -1,41 +1,60 @@
 import React, { useState } from "react";
-
-
+import "./App.css"; // Import the CSS file
 
 const Calculator = () => {
-    const [input, setInput] = useState("");
+  const [expression, setExpression] = useState("");
+  const [result, setResult] = useState("");
 
-    const handleClick = (value) => setInput((prev) => prev + value);
-    const clearInput = () => setInput("");
-    
-    const calculateResult = () => {
-        try {
-            let result = eval(input);
-            setInput(isNaN(result) || result === Infinity ? "NaN" : result.toString());
-        } catch {
-            setInput("Error");
-        }
-    };
+  const handleClick = (value) => {
+    setExpression((prev) => prev + value);
+  };
 
-    return (
-        <div className="calculator-container">
-            <div className="calculator">
-                <h1>React Calculator</h1>
-                <input type="text" value={input} className="display" readOnly />
-                <div className="button-grid">
-                    {["7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3", "*", "C", "0", "=", "/"].map((item) => (
-                        <button 
-                            key={item} 
-                            className={item === "C" ? "clear" : item === "=" ? "operator" : ""}
-                            onClick={item === "C" ? clearInput : item === "=" ? calculateResult : () => handleClick(item)}
-                        >
-                            {item}
-                        </button>
-                    ))}
-                </div>
-            </div>
+  const handleClear = () => {
+    setExpression("");
+    setResult("");
+  };
+
+  const handleCalculate = () => {
+    try {
+      if (!expression) {
+        setResult("Error");
+        return;
+      }
+      const evaluatedResult = eval(expression);
+      if (evaluatedResult === Infinity) {
+        setResult("Infinity");
+      } else if (isNaN(evaluatedResult)) {
+        setResult("NaN");
+      } else {
+        setResult(evaluatedResult);
+      }
+    } catch (error) {
+      setResult("Error");
+    }
+  };
+
+  return (
+    <div className="calculator-container">
+      <div className="calculator">
+        <h1>Calculator</h1>
+        <input type="text" className="display" value={expression} readOnly />
+        <div className="display">{result}</div>
+        <div className="button-grid">
+          {["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", "C", "=", "+"].map((btn) => (
+            <button
+              key={btn}
+              className={`button ${btn === "=" ? "operator" : ""} ${btn === "C" ? "clear" : ""}`}
+              onClick={() =>
+                btn === "C" ? handleClear() : btn === "=" ? handleCalculate() : handleClick(btn)
+              }
+            >
+              {btn}
+            </button>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Calculator;
