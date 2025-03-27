@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 
 
+
 const Calculator = () => {
     const [input, setInput] = useState("");
 
-    const handleClick = (value) => {
-        setInput((prev) => prev + value);
-    };
-
-    const clearInput = () => {
-        setInput("");
-    };
-
+    const handleClick = (value) => setInput((prev) => prev + value);
+    const clearInput = () => setInput("");
+    
     const calculateResult = () => {
         try {
-            setInput(eval(input).toString());
+            let result = eval(input);
+            setInput(isNaN(result) || result === Infinity ? "NaN" : result.toString());
         } catch {
             setInput("Error");
         }
@@ -26,21 +23,15 @@ const Calculator = () => {
                 <h1>React Calculator</h1>
                 <input type="text" value={input} className="display" readOnly />
                 <div className="button-grid">
-                    {["7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3", "*", "C", "0", "=", "/"].map((item) =>
-                        item === "C" ? (
-                            <button key={item} className="clear" onClick={clearInput}>
-                                {item}
-                            </button>
-                        ) : item === "=" ? (
-                            <button key={item} className="operator" onClick={calculateResult}>
-                                {item}
-                            </button>
-                        ) : (
-                            <button key={item} onClick={() => handleClick(item)}>
-                                {item}
-                            </button>
-                        )
-                    )}
+                    {["7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3", "*", "C", "0", "=", "/"].map((item) => (
+                        <button 
+                            key={item} 
+                            className={item === "C" ? "clear" : item === "=" ? "operator" : ""}
+                            onClick={item === "C" ? clearInput : item === "=" ? calculateResult : () => handleClick(item)}
+                        >
+                            {item}
+                        </button>
+                    ))}
                 </div>
             </div>
         </div>
